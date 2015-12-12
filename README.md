@@ -7,7 +7,9 @@ A simple C# library to interface with Counter-Strike: Global Offensive *Game Sta
 
 ## Installation
 1. Get the [latest binaries](https://github.com/rakijah/CSGSI/releases/latest)
-2. Add a reference to CSGSI.dll in your project
+2. Get the [JSON Framework .dll by Newtonsoft](https://github.com/JamesNK/Newtonsoft.Json/releases)
+3. Extract Newtonsoft.Json.dll from `Bin\Net45\Newtonsoft.Json.dll`
+4. Add a reference to both CSGSI.dll and Newtonsoft.Json.dll in your project
 
 ## About CSGSI
 
