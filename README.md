@@ -1,6 +1,10 @@
 # CSGSI
 A simple C# library to interface with Counter-Strike: Global Offensive *Game State Integration*
 
+# **!! Development ceased indefinitely !!**
+#### If you're looking for an actively developed alternative, see [master117's library](https://bitbucket.org/master117/csgogameobserversdk).  
+
+<br><br>
 ## What is Game State Integration
 
 [This wiki page by Valve](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration) explains the concept of GSI.
