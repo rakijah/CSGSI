@@ -45,10 +45,19 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="GameState.cs" />
-    <Compile Include="GameStateNode.cs" />
-    <Compile Include="GSIListener.cs" />
+    <Compile Include="GameStateListener.cs" />
+    <Compile Include="Nodes\AllPlayersNode.cs" />
+    <Compile Include="Nodes\AuthNode.cs" />
+    <Compile Include="Nodes\MapNode.cs" />
+    <Compile Include="Nodes\MatchStatsNode.cs" />
+    <Compile Include="Nodes\NodeBase.cs" />
+    <Compile Include="Nodes\PlayerNode.cs" />
+    <Compile Include="Nodes\ProviderNode.cs" />
+    <Compile Include="Nodes\RoundNode.cs" />
+    <Compile Include="Nodes\PlayerStateNode.cs" />
+    <Compile Include="Nodes\WeaponNode.cs" />
+    <Compile Include="Nodes\WeaponsNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="UacHelper.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

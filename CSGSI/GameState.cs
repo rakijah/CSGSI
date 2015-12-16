@@ -5,6 +5,7 @@ using System.Net.Sockets;
 using System.Collections.Generic;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using CSGSI.Nodes;
 namespace CSGSI
 {
     /// <summary>
@@ -12,86 +13,132 @@ namespace CSGSI
     /// </summary>
     public class GameState
     {
-        private JObject m_Data;
+        private JObject _Data;
 
-        private GameStateNode m_Provider;
-        private GameStateNode m_Map;
-        private GameStateNode m_Round;
-        private GameStateNode m_Player;
-        private GameStateNode m_Auth;
-        private GameStateNode m_Added;
-        private GameStateNode m_Previously;
+        private ProviderNode _Provider;
+        private MapNode _Map;
+        private RoundNode _Round;
+        private PlayerNode _Player;
+        private AllPlayersNode _AllPlayers;
+        private GameState _Previously;
+        private GameState _Added;
+        private AuthNode _Auth;
 
-        /// <summary>
-        /// The "provider" subnode
-        /// </summary>
-        public GameStateNode Provider { get { return m_Provider; } }
+        public ProviderNode Provider
+        {
+            get
+            {
+                if (_Provider == null)
+                {
+                    _Provider = new ProviderNode(_Data["provider"]?.ToString() ?? "");
+                }
 
-        /// <summary>
-        /// The "map" subnode
-        /// </summary>
-        public GameStateNode Map { get { return m_Map; } }
+                return _Provider;
+            }
+        }
+        public MapNode Map
+        {
+            get
+            {
+                if (_Map == null)
+                {
+                    _Map = new MapNode(_Data["map"]?.ToString() ?? "");
+                }
 
-        /// <summary>
-        /// The "round" subnode
-        /// </summary>
-        public GameStateNode Round { get { return m_Round; } }
+                return _Map;
+            }
+        }
+        public RoundNode Round
+        {
+            get
+            {
+                if (_Round == null)
+                {
+                    _Round = new RoundNode(_Data["round"]?.ToString() ?? "");
+                }
 
-        /// <summary>
-        /// The "player" subnode
-        /// </summary>
-        public GameStateNode Player { get { return m_Player; } }
+                return _Round;
+            }
+        }
+        public PlayerNode Player
+        {
+            get
+            {
+                if (_Player == null)
+                {
+                    _Player = new PlayerNode(_Data["player"]?.ToString() ?? "");
+                }
 
-        /// <summary>
-        /// The "auth" subnode
-        /// </summary>
-        public GameStateNode Auth { get { return m_Auth; } }
+                return _Player;
+            }
+        }
+        public AllPlayersNode AllPlayers
+        {
+            get
+            {
+                if (_AllPlayers == null)
+                {
+                    _AllPlayers = new AllPlayersNode(_Data["allplayers"]?.ToString() ?? "");
+                }
 
-        /// <summary>
-        /// The "added" subnode
-        /// </summary>
-        public GameStateNode Added { get { return m_Added; } }
+                return _AllPlayers;
+            }
+        }
+        public GameState Previously
+        {
+            get
+            {
+                if (_Previously == null)
+                {
+                    _Previously = new GameState(_Data["previously"]?.ToString() ?? "");
+                }
 
-        /// <summary>
-        /// The "previously" subnode
-        /// </summary>
-        public GameStateNode Previously { get { return m_Previously; } }
+                return _Previously;
+            }
+        }
+        public GameState Added
+        {
+            get
+            {
+                if (_Added == null)
+                {
+                    _Added = new GameState(_Data["added"]?.ToString() ?? "");
+                }
+                return _Added;
+            }
+        }
+        public AuthNode Auth
+        {
+            get
+            {
+                if(_Auth == null)
+                {
+                    _Auth = new AuthNode(_Data["auth"]?.ToString() ?? "");
+                }
 
-        private string m_JSON;
+                return _Auth;
+            }
+        }
+
 
         /// <summary>
         /// The JSON string that was used to generate this object
         /// </summary>
-        public string JSON { get { return m_JSON; } }
-
+        public readonly string JSON;
+        
         /// <summary>
         /// Initialises a new GameState object using a JSON string
         /// </summary>
         /// <param name="JSONstring"></param>
         public GameState(string JSONstring)
         {
-            m_JSON = JSONstring;
+            if(JSONstring.Equals(""))
+            {
+                JSONstring = "{}";
+            }
 
-            if (!JSONstring.Equals(""))
-                m_Data = JObject.Parse(JSONstring);
-            
-            m_Provider =    (HasRootNode("provider")    ? new GameStateNode(m_Data["provider"]) :   GameStateNode.Empty());
-            m_Map =         (HasRootNode("map")         ? new GameStateNode(m_Data["map"]) :        GameStateNode.Empty());
-            m_Round =       (HasRootNode("round")       ? new GameStateNode(m_Data["round"]) :      GameStateNode.Empty());
-            m_Player =      (HasRootNode("player")      ? new GameStateNode(m_Data["player"]) :     GameStateNode.Empty());
-            m_Auth =        (HasRootNode("auth")        ? new GameStateNode(m_Data["auth"]) :       GameStateNode.Empty());
-            m_Added =       (HasRootNode("added")       ? new GameStateNode(m_Data["added"]) :      GameStateNode.Empty());
-            m_Previously =  (HasRootNode("previously")  ? new GameStateNode(m_Data["previously"]) : GameStateNode.Empty());
-        }
-
-        /// <summary>
-        /// Determines if the specified node exists in this GameState object 
-        /// </summary>
-        /// <param name="rootnode"></param>
-        /// <returns>Returns true if the specified node exists, false otherwise</returns>
-        public bool HasRootNode(string rootnode)
-        {
-            return (m_Data != null && m_Data[rootnode] != null);
+            JSON = JSONstring;
+            _Data = JObject.Parse(JSONstring);
         }
     }
 }
