@@ -31,10 +31,10 @@ It also provides access to all rootnodes (see Usage).
 <a name="installation">
 ## Installation
 </a>
-1. Get the [latest binaries](https://github.com/rakijah/CSGSI/releases/latest)
-2. Get the [JSON Framework .dll by Newtonsoft](https://github.com/JamesNK/Newtonsoft.Json/releases)
-3. Extract Newtonsoft.Json.dll from `Bin\Net45\Newtonsoft.Json.dll`
-4. Add a reference to both CSGSI.dll and Newtonsoft.Json.dll in your project
+1. Get the [latest binaries](https://github.com/rakijah/CSGSI/releases/latest)  
+2. Get the [JSON Framework .dll by Newtonsoft](https://github.com/JamesNK/Newtonsoft.Json/releases)  
+3. Extract Newtonsoft.Json.dll from `Bin\Net45\Newtonsoft.Json.dll`  
+4. Add a reference to both CSGSI.dll and Newtonsoft.Json.dll in your project  
 
 <a name="usage">
 ## Usage
@@ -110,6 +110,7 @@ GameState
 			.Player
 					.SteamID
 					.Name
+					.Clan
 					.Team
 					.Activity
 					.Weapons
@@ -122,13 +123,13 @@ GameState
 									.AmmoClipMax
 									.AmmoReserve
 									.State
-					MatchStats
+					.MatchStats
 							.Kills
 							.Assists
 							.Deaths
 							.MVPs
 							.Score
-					State
+					.State
 							.Health
 							.Armor
 							.Helmet
@@ -140,11 +141,11 @@ GameState
 							.RoundKillHS
 			.AllPlayers
 					[]
-							Player
+							=>Player
 			.Previously
-					GameState
+					=>GameState
 			.Added
-					GameState
+					=>GameState
 			.Auth
 					.Token
 ```

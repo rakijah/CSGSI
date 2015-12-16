@@ -12,6 +12,7 @@ namespace CSGSI.Nodes
         public string SteamID { get { return _SteamID; } }
         public readonly string Name;
         public readonly string Team;
+        public readonly string Clan;
         public readonly PlayerActivity Activity;
         public readonly WeaponsNode Weapons;
         public readonly MatchStatsNode MatchStats;
@@ -23,6 +24,7 @@ namespace CSGSI.Nodes
             _SteamID = GetString("steamid");
             Name = GetString("name");
             Team = GetString("team");
+            Clan = GetString("clan");
             State = new PlayerStateNode(m_Data?.SelectToken("state")?.ToString() ?? "{}");
             Weapons = new WeaponsNode(m_Data?.SelectToken("weapons")?.ToString() ?? "{}");
             MatchStats = new MatchStatsNode(m_Data?.SelectToken("match_stats")?.ToString() ?? "{}");
