@@ -31,11 +31,13 @@ It also provides access to all rootnodes (see Usage).
 
 ## Installation
 Via NuGet:
+
 ```
 Install-Package CSGSI
 ```
 
 Manual installation:
+
 1. Get the [latest binaries](https://github.com/rakijah/CSGSI/releases/latest)  
 2. Get the [JSON Framework .dll by Newtonsoft](https://github.com/JamesNK/Newtonsoft.Json/releases)  
 3. Extract Newtonsoft.Json.dll from `Bin\Net45\Newtonsoft.Json.dll`  
