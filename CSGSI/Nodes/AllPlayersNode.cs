@@ -31,7 +31,7 @@ namespace CSGSI.Nodes
         internal AllPlayersNode(string JSON)
             : base(JSON)
         {
-            foreach (JToken jt in m_Data.Children())
+            foreach (JToken jt in _Data.Children())
             {
                 PlayerNode pn = new PlayerNode(jt.First.ToString());
                 pn._SteamID = jt.Value<JProperty>()?.Name ?? "";

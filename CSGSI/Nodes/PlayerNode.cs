@@ -25,9 +25,9 @@ namespace CSGSI.Nodes
             Name = GetString("name");
             Team = GetString("team");
             Clan = GetString("clan");
-            State = new PlayerStateNode(m_Data?.SelectToken("state")?.ToString() ?? "{}");
-            Weapons = new WeaponsNode(m_Data?.SelectToken("weapons")?.ToString() ?? "{}");
-            MatchStats = new MatchStatsNode(m_Data?.SelectToken("match_stats")?.ToString() ?? "{}");
+            State = new PlayerStateNode(_Data?.SelectToken("state")?.ToString() ?? "{}");
+            Weapons = new WeaponsNode(_Data?.SelectToken("weapons")?.ToString() ?? "{}");
+            MatchStats = new MatchStatsNode(_Data?.SelectToken("match_stats")?.ToString() ?? "{}");
             Activity = GetEnum<PlayerActivity>("activity");
         }
     }

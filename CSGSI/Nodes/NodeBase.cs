@@ -5,12 +5,12 @@ namespace CSGSI.Nodes
 {
     public class NodeBase
     {
-        protected string m_JSON;
-        protected JObject m_Data;
+        protected string _JSON;
+        protected JObject _Data;
 
         public string JSON
         {
-            get { return m_JSON; }
+            get { return _JSON; }
         }
 
         internal NodeBase(string JSON)
@@ -19,28 +19,28 @@ namespace CSGSI.Nodes
             {
                 JSON = "{}";
             }
-            m_Data = JObject.Parse(JSON);
-            m_JSON = JSON;
+            _Data = JObject.Parse(JSON);
+            _JSON = JSON;
         }
 
         internal string GetString(string Name)
         {
-            return m_Data?[Name]?.ToString() ?? "";
+            return _Data?[Name]?.ToString() ?? "";
         }
 
         internal int GetInt32(string Name)
         {
-            return Convert.ToInt32(m_Data[Name]?.ToString() ?? "-1");
+            return Convert.ToInt32(_Data[Name]?.ToString() ?? "-1");
         }
 
         internal T GetEnum<T>(string Name)
         {
-            return (T)Enum.Parse(typeof(T), (m_Data[Name]?.ToString().Replace(" ", String.Empty) ?? "Undefined"), true);
+            return (T)Enum.Parse(typeof(T), (_Data[Name]?.ToString().Replace(" ", String.Empty) ?? "Undefined"), true);
         }
 
         internal bool GetBool(string Name)
         {
-            return m_Data?[Name]?.ToObject<bool>() ?? false;
+            return _Data?[Name]?.ToObject<bool>() ?? false;
         }
     }
 }

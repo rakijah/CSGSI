@@ -2,23 +2,23 @@
 A simple C# library to interface with Counter-Strike: Global Offensive *Game State Integration*
 
 ## Table of Contents  
-[What is Game State Integration](#whatis)  
-[About CSGSI](#about)  
+[What is Game State Integration](#what-is-game-state-integration)  
+[About CSGSI](#about-csgsi)  
 [Installation](#installation)  
 [Usage](#usage)  
 [Layout](#layout)  
-[Null value handling](#nullvaluehandling)  
-[Example program](#example)  
+[Null value handling](#null-value-handling)  
+[Example program](#example-program)  
 
 <br>
-<a name="whatis">
+
 ## What is Game State Integration
-</a>
+
 [This wiki page by Valve](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration) explains the concept of GSI.
 
-<a name="about">
+
 ## About CSGSI
-</a>
+
 This library provides means to listen to a specific port for the game clients HTTP POST request. Once a request is received, the game state is parsed and can then be analyzed.
 
 CSGSI uses Newtonsoft's [JSON.Net Framework](http://www.newtonsoft.com/json) to parse JSON.
@@ -28,17 +28,16 @@ Every time a request is received, it's JSON content is used to construct a new `
 The `GameState` class represents the entire game state as it was sent by the client.  
 It also provides access to all rootnodes (see Usage).
 
-<a name="installation">
+
 ## Installation
-</a>
+
 1. Get the [latest binaries](https://github.com/rakijah/CSGSI/releases/latest)  
 2. Get the [JSON Framework .dll by Newtonsoft](https://github.com/JamesNK/Newtonsoft.Json/releases)  
 3. Extract Newtonsoft.Json.dll from `Bin\Net45\Newtonsoft.Json.dll`  
 4. Add a reference to both CSGSI.dll and Newtonsoft.Json.dll in your project  
 
-<a name="usage">
 ## Usage
-</a>
+
 
 Create a `GameStateListener` instance by providing a port or passing a specific URI:
 
@@ -85,9 +84,8 @@ string activeWep = player.Weapons.ActiveWeapon.JSON
 //}
 ```
 
-<a name="layout">
 ## Layout
-</a>
+
 ```
 GameState
 			.Provider
@@ -168,9 +166,8 @@ string| String.Empty
 
 All Enums have a value `enum.Undefined` that serves the same purpose.
 
-<a name="example">
 ## Example program
-</a>
+
 Prints "Bomb has been planted", every time you plant the bomb:
 
 ```

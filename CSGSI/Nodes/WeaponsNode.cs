@@ -28,7 +28,7 @@ namespace CSGSI.Nodes
         internal WeaponsNode(string JSON)
             : base(JSON)
         {
-            foreach(JToken jt in m_Data.Children())
+            foreach(JToken jt in _Data.Children())
             {
                 _Weapons.Add(new WeaponNode(jt.First.ToString()));
             }

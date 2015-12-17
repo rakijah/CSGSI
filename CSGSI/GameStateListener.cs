@@ -15,10 +15,10 @@ namespace CSGSI
     public class GameStateListener
     {
         private AutoResetEvent waitForConnection = new AutoResetEvent(false);
-        private GameState m_CurrentGameState;
-        private int m_Port;
-        private bool m_Running = false;
-        private HttpListener m_Listener;
+        private GameState _CurrentGameState;
+        private int _Port;
+        private bool _Running = false;
+        private HttpListener _Listener;
 
         /// <summary>
         /// The most recently received GameState
@@ -27,19 +27,19 @@ namespace CSGSI
         {
             get
             {
-                return m_CurrentGameState;
+                return _CurrentGameState;
             }
         }
 
         /// <summary>
         /// Gets the port that this GameStateListener instance is listening to
         /// </summary>
-        public int Port { get { return m_Port; } }
+        public int Port { get { return _Port; } }
 
         /// <summary>
         /// Gets a value indicating if the listening process is running
         /// </summary>
-        public bool Running { get { return m_Running; } }
+        public bool Running { get { return _Running; } }
 
         /// <summary>
         /// Occurs after a new GameState has been received
@@ -52,9 +52,9 @@ namespace CSGSI
         /// <param name="Port"></param>
         public GameStateListener(int Port)
         {
-            m_Port = Port;
-            m_Listener = new HttpListener();
-            m_Listener.Prefixes.Add("http://localhost:" + Port + "/");
+            _Port = Port;
+            _Listener = new HttpListener();
+            _Listener.Prefixes.Add("http://localhost:" + Port + "/");
         }
 
         /// <summary>
@@ -72,10 +72,10 @@ namespace CSGSI
             {
                 throw new ArgumentException("Not a valid URI: " + URI);
             }
-            m_Port = Convert.ToInt32(PortMatch.Groups[1].Value);
+            _Port = Convert.ToInt32(PortMatch.Groups[1].Value);
             
-            m_Listener = new HttpListener();
-            m_Listener.Prefixes.Add(URI);
+            _Listener = new HttpListener();
+            _Listener.Prefixes.Add(URI);
         }
 
         /// <summary>
@@ -85,19 +85,19 @@ namespace CSGSI
         /// <returns>Returns true on success</returns>
         public bool Start()
         {
-            if (!m_Running)
+            if (!_Running)
             {
-                Thread m_ListenerThread = new Thread(new ThreadStart(Run));
+                Thread ListenerThread = new Thread(new ThreadStart(Run));
                 try
                 {
-                    m_Listener.Start();
+                    _Listener.Start();
                 }
                 catch (HttpListenerException)
                 {
                     return false;
                 }
-                m_Running = true;
-                m_ListenerThread.Start();
+                _Running = true;
+                ListenerThread.Start();
                 return true;
             }
 
@@ -109,23 +109,23 @@ namespace CSGSI
         /// </summary>
         public void Stop()
         {
-            m_Running = false;
+            _Running = false;
         }
 
         private void Run()
         {
-            while (m_Running)
+            while (_Running)
             {
-                m_Listener.BeginGetContext(ReceiveGameState, m_Listener);
+                _Listener.BeginGetContext(ReceiveGameState, _Listener);
                 waitForConnection.WaitOne();
                 waitForConnection.Reset();
             }
-            m_Listener.Stop();
+            _Listener.Stop();
         }
 
         private void ReceiveGameState(IAsyncResult result)
         {
-            HttpListenerContext context = m_Listener.EndGetContext(result);
+            HttpListenerContext context = _Listener.EndGetContext(result);
             HttpListenerRequest request = context.Request;
             string JSON;
 
@@ -144,8 +144,8 @@ namespace CSGSI
                 response.StatusDescription = "OK";
                 response.Close();
             }
-            m_CurrentGameState = new GameState(JSON);
-            NewGameState(m_CurrentGameState);
+            _CurrentGameState = new GameState(JSON);
+            NewGameState(_CurrentGameState);
         }
     }
 }
