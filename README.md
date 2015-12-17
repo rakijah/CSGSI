@@ -30,59 +30,44 @@ It also provides access to all rootnodes (see Usage).
 
 
 ## Installation
+Via NuGet:
+```
+Install-Package CSGSI
+```
 
+Manual installation:
 1. Get the [latest binaries](https://github.com/rakijah/CSGSI/releases/latest)  
 2. Get the [JSON Framework .dll by Newtonsoft](https://github.com/JamesNK/Newtonsoft.Json/releases)  
 3. Extract Newtonsoft.Json.dll from `Bin\Net45\Newtonsoft.Json.dll`  
 4. Add a reference to both CSGSI.dll and Newtonsoft.Json.dll in your project  
 
 ## Usage
+1. Create a `GameStateListener` instance by providing a port or passing a specific URI:
 
-
-Create a `GameStateListener` instance by providing a port or passing a specific URI:
-
-    GameStateListener gsl = new GameStateListener(3000); //http://localhost:3000/  
-    GameStateListener gsl = new GameStateListener("http://127.0.0.1:81/");
+```C#
+GameStateListener gsl = new GameStateListener(3000); //http://localhost:3000/  
+GameStateListener gsl = new GameStateListener("http://127.0.0.1:81/");
+```
 
 **Please note**: If your application needs to listen to a URI other than `http://localhost:*/` (for example `http://192.168.2.2:100/`), you need to ensure that it is run with administrator privileges.  
 In this case, `http://127.0.0.1:*/` is **not** equivalent to `http://localhost:*/`.
 
-Use `GameStateListener.Start()` to start listening for HTTP POST requests from the game client. This method will return `false` if starting the listener fails (most likely due to insufficient privileges).
+2. Create a handler:
 
-The GameStateListener class provides the `NewGameState` event that occurs after a new game state has been received:
-```
-gsl.NewGameState += new EventHandler(OnNewGameState);
-
-private static void OnNewGameState(GameState gs)
+```C#
+void OnNewGameState(GameState gs)
 {
-    //gs contains the current GameState
+    //do stuff
 }
 ```
 
-The `GameState` object provides access to these rootnodes that may be transmitted by the game:
+3. Subscribe to the `NewGameState` event:
 
-* gs.Provider
-* gs.Map
-* gs.Round
-* gs.Player
-* gs.AllPlayers
-* gs.Auth
-* gs.Added
-* gs.Previously
-
-##### Example:
+```C#
+gsl.NewGameState += new NewGameStateHandler(OnNewGameState);
 ```
-PlayerNode player = gs.Player;
-int Health = player.State.Health;
-//100
 
-string activeWep = player.Weapons.ActiveWeapon.JSON
-//{
-//  "name": "weapon_knife",
-//  "paintkit": ...
-//  ...
-//}
-```
+4. Use `GameStateListener.Start()` to start listening for HTTP POST requests from the game client. This method will return `false` if starting the listener fails (most likely due to insufficient privileges).
 
 ## Layout
 
@@ -148,14 +133,22 @@ GameState
 					.Token
 ```
 
+Every Node has a property `string JSON` that contains the JSON string that was parsed to create the node.
+
 ##### Examples:
-`gs.Player.Weapons.ActiveWeapon.AmmoClip`
+```C#
+int Health = gs.Player.State.Health;
+//100
 
-`gs.AllPlayers[0].State.Health`
+string activeWep = gs.Player.Weapons.ActiveWeapon.JSON
+//{
+//  "name": "weapon_knife",
+//  "paintkit": ...
+//  ...
+//}
+```
 
-<a name="nullvaluehandling">
 ## Null value handling
-</a>
 
 In case the JSON did not contain the requested information, these values will be returned:
 
@@ -170,7 +163,7 @@ All Enums have a value `enum.Undefined` that serves the same purpose.
 
 Prints "Bomb has been planted", every time you plant the bomb:
 
-```
+```C#
 using System;
 using CSGSI;
 using CSGSI.Nodes;
