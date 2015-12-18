@@ -87,7 +87,9 @@ GameState
 					.Phase
 					.Round
 					.TeamCT
+                            .Score
 					.TeamT
+                            .Score
 			.Round
 					.Phase
 					.Bomb

@@ -55,6 +55,7 @@
     <Compile Include="Nodes\ProviderNode.cs" />
     <Compile Include="Nodes\RoundNode.cs" />
     <Compile Include="Nodes\PlayerStateNode.cs" />
+    <Compile Include="Nodes\MapTeamNode.cs" />
     <Compile Include="Nodes\WeaponNode.cs" />
     <Compile Include="Nodes\WeaponsNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
