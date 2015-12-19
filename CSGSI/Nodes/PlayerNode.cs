@@ -11,7 +11,7 @@ namespace CSGSI.Nodes
         internal string _SteamID;
         public string SteamID { get { return _SteamID; } }
         public readonly string Name;
-        public readonly string Team;
+        public readonly PlayerTeam Team;
         public readonly string Clan;
         public readonly PlayerActivity Activity;
         public readonly WeaponsNode Weapons;
@@ -23,7 +23,7 @@ namespace CSGSI.Nodes
         {
             _SteamID = GetString("steamid");
             Name = GetString("name");
-            Team = GetString("team");
+            Team = GetEnum<PlayerTeam>("team");
             Clan = GetString("clan");
             State = new PlayerStateNode(_Data?.SelectToken("state")?.ToString() ?? "{}");
             Weapons = new WeaponsNode(_Data?.SelectToken("weapons")?.ToString() ?? "{}");
@@ -41,5 +41,12 @@ namespace CSGSI.Nodes
         /// Console is open
         /// </summary>
         TextInput
+    }
+
+    public enum PlayerTeam
+    {
+        Undefined,
+        T,
+        CT
     }
 }

@@ -61,5 +61,10 @@ namespace CSGSI.Nodes
         {
             return _Players.GetEnumerator();
         }
+
+        public List<PlayerNode> GetTeam(PlayerTeam Team)
+        {
+            return _Players.FindAll(x => x.Team == Team);
+        }
     }
 }

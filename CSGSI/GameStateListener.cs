@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading;
 using System.Text.RegularExpressions;
 using System.Diagnostics;
+using System.ComponentModel;
 
 namespace CSGSI
 {
@@ -28,6 +29,11 @@ namespace CSGSI
             get
             {
                 return _CurrentGameState;
+            }
+            private set
+            {
+                _CurrentGameState = value;
+                RaiseOnNewGameState();
             }
         }
 
@@ -144,8 +150,22 @@ namespace CSGSI
                 response.StatusDescription = "OK";
                 response.Close();
             }
-            _CurrentGameState = new GameState(JSON);
-            NewGameState(_CurrentGameState);
+            CurrentGameState = new GameState(JSON);
+        }
+        
+        private void RaiseOnNewGameState()
+        {
+            foreach (Delegate d in NewGameState.GetInvocationList())
+            {
+                if (d.Target is ISynchronizeInvoke)
+                {
+                    (d.Target as ISynchronizeInvoke).BeginInvoke(d, new object[] { CurrentGameState });
+                }
+                else
+                {
+                    d.DynamicInvoke(CurrentGameState);
+                }
+            }
         }
     }
 }
