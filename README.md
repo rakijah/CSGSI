@@ -43,6 +43,8 @@ Manual installation:
 3. Extract Newtonsoft.Json.dll from `Bin\Net45\Newtonsoft.Json.dll`  
 4. Add a reference to both CSGSI.dll and Newtonsoft.Json.dll in your project  
 
+**Hint:** The NuGet package will always be up to date with the latest commit, but I will only publish a new binary release every major update.
+
 ## Usage
 1. Create a `GameStateListener` instance by providing a port or passing a specific URI:
 
