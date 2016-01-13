@@ -24,7 +24,7 @@ namespace CSGSI.Nodes
             Type = GetEnum<WeaponType>("type");
             AmmoClip = GetInt32("ammo_clip");
             AmmoClipMax = GetInt32("ammo_clip_max");
-            AmmoReserve = GetInt32("ammo_clip_reserve");
+            AmmoReserve = GetInt32("ammo_reserve");
             State = GetEnum<WeaponState>("state");
         }
     }
