@@ -129,8 +129,6 @@ namespace CSGSI
                 waitForConnection.WaitOne();
                 waitForConnection.Reset();
             }
-
-            _Running = false;
         }
 
         private void ReceiveGameState(IAsyncResult result)
