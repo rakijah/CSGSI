@@ -59,8 +59,6 @@ namespace CSGSI
         public GameStateListener(int Port)
         {
             _Port = Port;
-            _Listener = new HttpListener();
-            _Listener.Prefixes.Add("http://localhost:" + Port + "/");
         }
 
         /// <summary>
@@ -93,6 +91,10 @@ namespace CSGSI
         {
             if (!_Running)
             {
+                // Initialising only at Start of Listener (for reuse after Stop)
+
+                _Listener = new HttpListener();
+                _Listener.Prefixes.Add("http://localhost:" + Port + "/");
                 Thread ListenerThread = new Thread(new ThreadStart(Run));
                 try
                 {
@@ -115,6 +117,7 @@ namespace CSGSI
         /// </summary>
         public void Stop()
         {
+            _Listener.Close();
             _Running = false;
         }
 
@@ -126,16 +129,27 @@ namespace CSGSI
                 waitForConnection.WaitOne();
                 waitForConnection.Reset();
             }
-            _Listener.Stop();
         }
 
         private void ReceiveGameState(IAsyncResult result)
         {
-            HttpListenerContext context = _Listener.EndGetContext(result);
+            HttpListenerContext context;
+            try
+            {
+                context = _Listener.EndGetContext(result);
+            }
+            catch (ObjectDisposedException e)
+            {
+                // Listener was Closed due to call of Stop();
+                return;
+            }
+            finally
+            {
+                waitForConnection.Set();
+            }
+
             HttpListenerRequest request = context.Request;
             string JSON;
-
-            waitForConnection.Set();
 
             using (Stream inputStream = request.InputStream)
             {
