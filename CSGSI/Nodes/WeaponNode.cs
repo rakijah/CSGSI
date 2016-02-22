@@ -40,7 +40,8 @@ namespace CSGSI.Nodes
         Pistol,
         Knife,
         Grenade,
-        C4
+        C4,
+        StackableItem
     }
 
     public enum WeaponState
