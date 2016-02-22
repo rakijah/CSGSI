@@ -46,6 +46,7 @@ namespace CSGSI.Nodes
         /// Arms Race & Demolition
         /// </summary>
         GunGameTRBomb,
+        CoopMission,
         Custom
     }
 }
