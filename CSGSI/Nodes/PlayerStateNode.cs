@@ -13,6 +13,7 @@ namespace CSGSI.Nodes
         public readonly int Money;
         public readonly int RoundKills;
         public readonly int RoundKillHS;
+        public readonly bool DefuseKit;
 
         internal PlayerStateNode(string JSON)
             : base(JSON)
@@ -26,6 +27,7 @@ namespace CSGSI.Nodes
             Money = GetInt32("money");
             RoundKills = GetInt32("round_kills");
             RoundKillHS = GetInt32("round_killhs");
+            DefuseKit = GetBool("defusekit");
         }
     }
 }

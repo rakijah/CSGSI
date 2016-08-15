@@ -128,6 +128,7 @@ GameState
 							.Money
 							.RoundKills
 							.RoundKillHS
+							.DefuseKit
 			.AllPlayers
 					[]
 							=>Player
