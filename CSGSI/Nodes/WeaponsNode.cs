@@ -11,6 +11,10 @@ namespace CSGSI.Nodes
         private List<WeaponNode> _Weapons = new List<WeaponNode>();
 
         public int Count { get { return _Weapons.Count; } }
+
+        /// <summary>
+        /// The weapon/equipment the player has currently pulled out.
+        /// </summary>
         public WeaponNode ActiveWeapon
         {
             get

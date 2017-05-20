@@ -117,8 +117,8 @@ namespace CSGSI
         /// </summary>
         public void Stop()
         {
-            _Listener.Close();
             _Running = false;
+            _Listener.Close();
         }
 
         private void Run()
@@ -129,6 +129,7 @@ namespace CSGSI
                 waitForConnection.WaitOne();
                 waitForConnection.Reset();
             }
+            _Listener.Stop();
         }
 
         private void ReceiveGameState(IAsyncResult result)

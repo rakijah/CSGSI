@@ -9,6 +9,10 @@ namespace CSGSI.Nodes
     public class WeaponNode : NodeBase
     {
         public readonly string Name;
+
+        /// <summary>
+        /// The skin this weapon currently has.
+        /// </summary>
         public readonly string Paintkit;
         public readonly WeaponType Type;
         public readonly int AmmoClip;

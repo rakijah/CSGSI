@@ -4,11 +4,35 @@ namespace CSGSI.Nodes
 {
     public class MapNode : NodeBase
     {
+        /// <summary>
+        /// The game mode (e.g. Deathmatch, Casual etc.)
+        /// </summary>
         public readonly MapMode Mode;
+
+        /// <summary>
+        /// The name of the current map (e.g. "de_mirage")
+        /// </summary>
         public readonly string Name;
+
+        /// <summary>
+        /// The current phase of the match (e.g. Live, Warmup etc.)
+        /// </summary>
         public readonly MapPhase Phase;
+
+        /// <summary>
+        /// The current round number
+        /// !! This is set to 0 for both warmup and pistol-round, check .Phase to prevent errors !!
+        /// </summary>
         public readonly int Round;
+
+        /// <summary>
+        /// Contains information about the Counter-Terrorist team such as current score.
+        /// </summary>
         public readonly MapTeamNode TeamCT;
+
+        /// <summary>
+        /// Contains information about the Terrorist team such as current score.
+        /// </summary>
         public readonly MapTeamNode TeamT;
 
         internal MapNode(string JSON)

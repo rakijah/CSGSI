@@ -20,10 +20,14 @@ namespace CSGSI
         private RoundNode _Round;
         private PlayerNode _Player;
         private AllPlayersNode _AllPlayers;
+        private PhaseCountdownsNode _PhaseCountdowns;
         private GameState _Previously;
         private GameState _Added;
         private AuthNode _Auth;
 
+        /// <summary>
+        /// Contains information about the game that is sending the data and the Steam user that is running the game itself.
+        /// </summary>
         public ProviderNode Provider
         {
             get
@@ -36,6 +40,9 @@ namespace CSGSI
                 return _Provider;
             }
         }
+        /// <summary>
+        /// Contains information about the current map and match (i.e. match score and remaining timeouts)
+        /// </summary>
         public MapNode Map
         {
             get
@@ -48,6 +55,9 @@ namespace CSGSI
                 return _Map;
             }
         }
+        /// <summary>
+        /// Contains information about the state of the current round (e.g. phase or the winning team)
+        /// </summary>
         public RoundNode Round
         {
             get
@@ -60,6 +70,9 @@ namespace CSGSI
                 return _Round;
             }
         }
+        /// <summary>
+        /// Contains information about the player (i.e. in the current POV, meaning this changes frequently during spectating)
+        /// </summary>
         public PlayerNode Player
         {
             get
@@ -72,6 +85,10 @@ namespace CSGSI
                 return _Player;
             }
         }
+        /// <summary>
+        /// Contains information about all players
+        /// !! This node is only available when spectating the match with access to every players' POV !!
+        /// </summary>
         public AllPlayersNode AllPlayers
         {
             get
@@ -84,6 +101,26 @@ namespace CSGSI
                 return _AllPlayers;
             }
         }
+
+        /// <summary>
+        /// Contains information about the current "phase" that the round (e.g. bomb planted) is in and how long the phase is going to last.
+        /// </summary>
+        public PhaseCountdownsNode PhaseCountdowns
+        {
+            get
+            {
+                if (_PhaseCountdowns == null)
+                {
+                    _PhaseCountdowns = new PhaseCountdownsNode(_Data["phase_countdowns"]?.ToString() ?? "");
+                }
+
+                return _PhaseCountdowns;
+            }
+        }
+
+        /// <summary>
+        /// When information has changed from the previous gamestate to the current one, the old values (before the change) are stored in this node.
+        /// </summary>
         public GameState Previously
         {
             get
@@ -96,6 +133,10 @@ namespace CSGSI
                 return _Previously;
             }
         }
+
+        /// <summary>
+        /// When information has been received, that was not present in the previous gamestate, the new values are (also) stored in this node.
+        /// </summary>
         public GameState Added
         {
             get
@@ -107,6 +148,8 @@ namespace CSGSI
                 return _Added;
             }
         }
+
+        //An auth code/phrase that can be set in your gamestate_integration_*.cfg. 
         public AuthNode Auth
         {
             get

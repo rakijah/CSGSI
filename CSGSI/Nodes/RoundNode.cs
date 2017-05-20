@@ -6,6 +6,10 @@ namespace CSGSI.Nodes
     {
         public readonly RoundPhase Phase;
         public readonly BombState Bomb;
+
+        /// <summary>
+        /// The team that won the current round (only available when Phase == Over)
+        /// </summary>
         public readonly RoundWinTeam WinTeam;
 
         internal RoundNode(string JSON)

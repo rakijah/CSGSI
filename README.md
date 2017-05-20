@@ -129,9 +129,13 @@ GameState
 							.RoundKills
 							.RoundKillHS
 							.DefuseKit
+                    .Position
 			.AllPlayers
 					[]
 							=>Player
+            .PhaseCountdowns
+                            .Phase
+                            .PhaseEndsIn
 			.Previously
 					=>GameState
 			.Added
@@ -157,12 +161,13 @@ string activeWep = gs.Player.Weapons.ActiveWeapon.JSON
 
 ## Null value handling
 
-In case the JSON did not contain the requested information, these values will be returned:
+In case the JSON did not contain the requested information or parsing the node failed, these values will be returned instead:
 
 Type|Default value
 ----|-------------
 int|-1
 string| String.Empty
+Position (from Player.Position)| (X: 0, Y: 0, Z: 0)
 
 All Enums have a value `enum.Undefined` that serves the same purpose.
 

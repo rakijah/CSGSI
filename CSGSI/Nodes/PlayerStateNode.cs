@@ -7,13 +7,26 @@ namespace CSGSI.Nodes
         public readonly int Health;
         public readonly int Armor;
         public readonly bool Helmet;
+
+        /// <summary>
+        /// Goes from 0 (not flashed) to 255 (fully flashed). After getting flashed, this will slowly go back down to 0.
+        /// </summary>
         public readonly int Flashed;
         public readonly int Smoked;
+
+        /// <summary>
+        /// Goes from 0 (not burning) to 255 (standing in a molotov/incendiary)
+        /// </summary>
         public readonly int Burning;
         public readonly int Money;
         public readonly int RoundKills;
         public readonly int RoundKillHS;
         public readonly bool DefuseKit;
+
+        /// <summary>
+        /// The total value of the players' current weapons + equipment (armor included)
+        /// </summary>
+        public readonly int EquipValue;
 
         internal PlayerStateNode(string JSON)
             : base(JSON)
@@ -28,6 +41,7 @@ namespace CSGSI.Nodes
             RoundKills = GetInt32("round_kills");
             RoundKillHS = GetInt32("round_killhs");
             DefuseKit = GetBool("defusekit");
+            EquipValue = GetInt32("equip_value");
         }
     }
 }

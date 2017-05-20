@@ -51,6 +51,7 @@
     <Compile Include="Nodes\MapNode.cs" />
     <Compile Include="Nodes\MatchStatsNode.cs" />
     <Compile Include="Nodes\NodeBase.cs" />
+    <Compile Include="Nodes\PhaseCountdownsNode.cs" />
     <Compile Include="Nodes\PlayerNode.cs" />
     <Compile Include="Nodes\ProviderNode.cs" />
     <Compile Include="Nodes\RoundNode.cs" />
