@@ -7,6 +7,7 @@ A simple C# library to interface with Counter-Strike: Global Offensive *Game Sta
 [Installation](#installation)  
 [Usage](#usage)  
 [Layout](#layout)  
+[Events](#events)
 [Null value handling](#null-value-handling)  
 [Example program](#example-program)  
 
@@ -158,6 +159,23 @@ string activeWep = gs.Player.Weapons.ActiveWeapon.JSON
 //  ...
 //}
 ```
+
+## Events
+
+CSGSI provides a few helpful events that you can subscribe to avoid having to implement the logic yourself. These events are experimental and not entirely reliable (mostly because CSGO's Game State Integration itself sends inconsistent data).
+
+Raising these events is disabled by default. To enable this feature, set `GameStateListener.EnableRaisingIntricateEvents = true`.
+
+Available events: 
+
+* `PlayerGotKill` - Is raised when a player gets a kill.
+* `RoundPhaseChanged` - Is raised when the round phase changes (for example "Live", "FreezeTime" etc.).
+* `PlayerFlashed` - Is raised when a player is flashed. Includes information about how much the player was flashed (0 - 255).
+* `BombPlanted` - Is raised when the bomb is planted.
+* `BombDefused` - Is raised when the bomb is defused.
+* `BombExploded` - Is raised when the bomb explodes.
+* `RoundEnd` - Is raised when the round ends.
+* `RoundBegin` - Is raised when a round begins (i.e. exits FreezeTime).
 
 ## Null value handling
 

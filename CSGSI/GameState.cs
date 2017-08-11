@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.IO;
 using System.Text;
 using System.Net.Sockets;
@@ -13,17 +13,17 @@ namespace CSGSI
     /// </summary>
     public class GameState
     {
-        private JObject _Data;
+        private JObject _data;
 
-        private ProviderNode _Provider;
-        private MapNode _Map;
-        private RoundNode _Round;
-        private PlayerNode _Player;
-        private AllPlayersNode _AllPlayers;
-        private PhaseCountdownsNode _PhaseCountdowns;
-        private GameState _Previously;
-        private GameState _Added;
-        private AuthNode _Auth;
+        private ProviderNode _provider;
+        private MapNode _map;
+        private RoundNode _round;
+        private PlayerNode _player;
+        private AllPlayersNode _allPlayers;
+        private PhaseCountdownsNode _phaseCountdowns;
+        private GameState _previously;
+        private GameState _added;
+        private AuthNode _auth;
 
         /// <summary>
         /// Contains information about the game that is sending the data and the Steam user that is running the game itself.
@@ -32,12 +32,12 @@ namespace CSGSI
         {
             get
             {
-                if (_Provider == null)
+                if (_provider == null)
                 {
-                    _Provider = new ProviderNode(_Data["provider"]?.ToString() ?? "");
+                    _provider = new ProviderNode(_data["provider"]?.ToString() ?? "");
                 }
 
-                return _Provider;
+                return _provider;
             }
         }
         /// <summary>
@@ -47,12 +47,12 @@ namespace CSGSI
         {
             get
             {
-                if (_Map == null)
+                if (_map == null)
                 {
-                    _Map = new MapNode(_Data["map"]?.ToString() ?? "");
+                    _map = new MapNode(_data["map"]?.ToString() ?? "");
                 }
 
-                return _Map;
+                return _map;
             }
         }
         /// <summary>
@@ -62,12 +62,12 @@ namespace CSGSI
         {
             get
             {
-                if (_Round == null)
+                if (_round == null)
                 {
-                    _Round = new RoundNode(_Data["round"]?.ToString() ?? "");
+                    _round = new RoundNode(_data["round"]?.ToString() ?? "");
                 }
 
-                return _Round;
+                return _round;
             }
         }
         /// <summary>
@@ -77,12 +77,12 @@ namespace CSGSI
         {
             get
             {
-                if (_Player == null)
+                if (_player == null)
                 {
-                    _Player = new PlayerNode(_Data["player"]?.ToString() ?? "");
+                    _player = new PlayerNode(_data["player"]?.ToString() ?? "");
                 }
 
-                return _Player;
+                return _player;
             }
         }
         /// <summary>
@@ -93,12 +93,12 @@ namespace CSGSI
         {
             get
             {
-                if (_AllPlayers == null)
+                if (_allPlayers == null)
                 {
-                    _AllPlayers = new AllPlayersNode(_Data["allplayers"]?.ToString() ?? "");
+                    _allPlayers = new AllPlayersNode(_data["allplayers"]?.ToString() ?? "");
                 }
 
-                return _AllPlayers;
+                return _allPlayers;
             }
         }
 
@@ -109,12 +109,12 @@ namespace CSGSI
         {
             get
             {
-                if (_PhaseCountdowns == null)
+                if (_phaseCountdowns == null)
                 {
-                    _PhaseCountdowns = new PhaseCountdownsNode(_Data["phase_countdowns"]?.ToString() ?? "");
+                    _phaseCountdowns = new PhaseCountdownsNode(_data["phase_countdowns"]?.ToString() ?? "");
                 }
 
-                return _PhaseCountdowns;
+                return _phaseCountdowns;
             }
         }
 
@@ -125,12 +125,12 @@ namespace CSGSI
         {
             get
             {
-                if (_Previously == null)
+                if (_previously == null)
                 {
-                    _Previously = new GameState(_Data["previously"]?.ToString() ?? "");
+                    _previously = new GameState(_data["previously"]?.ToString() ?? "");
                 }
 
-                return _Previously;
+                return _previously;
             }
         }
 
@@ -141,11 +141,11 @@ namespace CSGSI
         {
             get
             {
-                if (_Added == null)
+                if (_added == null)
                 {
-                    _Added = new GameState(_Data["added"]?.ToString() ?? "");
+                    _added = new GameState(_data["added"]?.ToString() ?? "");
                 }
-                return _Added;
+                return _added;
             }
         }
 
@@ -154,12 +154,12 @@ namespace CSGSI
         {
             get
             {
-                if(_Auth == null)
+                if(_auth == null)
                 {
-                    _Auth = new AuthNode(_Data["auth"]?.ToString() ?? "");
+                    _auth = new AuthNode(_data["auth"]?.ToString() ?? "");
                 }
 
-                return _Auth;
+                return _auth;
             }
         }
 
@@ -181,7 +181,7 @@ namespace CSGSI
             }
 
             JSON = JSONstring;
-            _Data = JObject.Parse(JSONstring);
+            _data = JObject.Parse(JSONstring);
         }
     }
 }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -9,8 +9,8 @@ namespace CSGSI.Nodes
 {
     public class PlayerNode : NodeBase
     {
-        internal string _SteamID;
-        public string SteamID { get { return _SteamID; } }
+        internal string _steamID;
+        public string SteamID { get { return _steamID; } }
         public readonly string Name;
 
         /// <summary>
@@ -45,14 +45,14 @@ namespace CSGSI.Nodes
         internal PlayerNode(string JSON)
             : base(JSON)
         {
-            _SteamID = GetString("steamid");
+            _steamID = GetString("steamid");
             Name = GetString("name");
             ObserverSlot = GetInt32("observer_slot");
             Team = GetEnum<PlayerTeam>("team");
             Clan = GetString("clan");
-            State = new PlayerStateNode(_Data?.SelectToken("state")?.ToString() ?? "{}");
-            Weapons = new WeaponsNode(_Data?.SelectToken("weapons")?.ToString() ?? "{}");
-            MatchStats = new MatchStatsNode(_Data?.SelectToken("match_stats")?.ToString() ?? "{}");
+            State = new PlayerStateNode(_data?.SelectToken("state")?.ToString() ?? "{}");
+            Weapons = new WeaponsNode(_data?.SelectToken("weapons")?.ToString() ?? "{}");
+            MatchStats = new MatchStatsNode(_data?.SelectToken("match_stats")?.ToString() ?? "{}");
             Activity = GetEnum<PlayerActivity>("activity");
             Position = ParsePosition(GetString("position"));
         }

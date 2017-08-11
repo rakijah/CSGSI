@@ -1,9 +1,11 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.25123.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26430.16
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSGSI", "CSGSI\CSGSI.csproj", "{8D55804C-2CF1-4A65-9C3E-8E41CD809535}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CSGSIEventTest", "C:\Users\Alex\Documents\Visual Studio 2017\Projects\CSGSIEventTest\CSGSIEventTest\CSGSIEventTest.csproj", "{D553831D-683D-411D-9432-FCF03A81D958}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +17,10 @@ Global
 		{8D55804C-2CF1-4A65-9C3E-8E41CD809535}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8D55804C-2CF1-4A65-9C3E-8E41CD809535}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8D55804C-2CF1-4A65-9C3E-8E41CD809535}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D553831D-683D-411D-9432-FCF03A81D958}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D553831D-683D-411D-9432-FCF03A81D958}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D553831D-683D-411D-9432-FCF03A81D958}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D553831D-683D-411D-9432-FCF03A81D958}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -44,6 +44,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Events\CSGSIEventHandlers.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="GameStateListener.cs" />
     <Compile Include="Nodes\AllPlayersNode.cs" />

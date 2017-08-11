@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
 using System.Linq;
 
@@ -8,9 +8,11 @@ namespace CSGSI.Nodes
 {
     public class WeaponsNode : NodeBase
     {
-        private List<WeaponNode> _Weapons = new List<WeaponNode>();
+        private List<WeaponNode> _weapons = new List<WeaponNode>();
 
-        public int Count { get { return _Weapons.Count; } }
+        public IEnumerable<WeaponNode> WeaponList => _weapons;
+
+        public int Count { get { return _weapons.Count; } }
 
         /// <summary>
         /// The weapon/equipment the player has currently pulled out.
@@ -19,7 +21,7 @@ namespace CSGSI.Nodes
         {
             get
             {
-                foreach(WeaponNode w in _Weapons)
+                foreach(WeaponNode w in _weapons)
                 {
                     if (w.State == WeaponState.Active || w.State == WeaponState.Reloading)
                         return w;
@@ -32,9 +34,9 @@ namespace CSGSI.Nodes
         internal WeaponsNode(string JSON)
             : base(JSON)
         {
-            foreach(JToken jt in _Data.Children())
+            foreach(JToken jt in _data.Children())
             {
-                _Weapons.Add(new WeaponNode(jt.First.ToString()));
+                _weapons.Add(new WeaponNode(jt.First.ToString()));
             }
         }
 
@@ -47,12 +49,12 @@ namespace CSGSI.Nodes
         {
             get
             {
-                if (index > _Weapons.Count - 1)
+                if (index > _weapons.Count - 1)
                 {
                     return new WeaponNode("");
                 }
 
-                return _Weapons[index];
+                return _weapons[index];
             }
         }
     }

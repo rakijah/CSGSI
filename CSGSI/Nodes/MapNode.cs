@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 
 namespace CSGSI.Nodes
 {
@@ -42,8 +42,8 @@ namespace CSGSI.Nodes
             Name = GetString("name");
             Phase = GetEnum<MapPhase>("phase");
             Round = GetInt32("round");
-            TeamCT = new MapTeamNode(_Data["team_ct"]?.ToString() ?? "");
-            TeamT = new MapTeamNode(_Data["team_t"]?.ToString() ?? "");
+            TeamCT = new MapTeamNode(_data["team_ct"]?.ToString() ?? "");
+            TeamT = new MapTeamNode(_data["team_t"]?.ToString() ?? "");
         }
     }
 
