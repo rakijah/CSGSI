@@ -7,7 +7,7 @@ A simple C# library to interface with Counter-Strike: Global Offensive *Game Sta
 [Installation](#installation)  
 [Usage](#usage)  
 [Layout](#layout)  
-[Events](#events)
+[Events](#events)  
 [Null value handling](#null-value-handling)  
 [Example program](#example-program)  
 
