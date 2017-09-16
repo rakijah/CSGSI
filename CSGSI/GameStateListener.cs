@@ -150,7 +150,7 @@ namespace CSGSI
             {
                 context = _listener.EndGetContext(result);
             }
-            catch (ObjectDisposedException e)
+            catch
             {
                 // Listener was Closed due to call of Stop();
                 return;
