@@ -9,8 +9,8 @@ namespace CSGSI.Nodes
 {
     public class PlayerNode : NodeBase
     {
-        internal string _steamID;
-        public string SteamID { get { return _steamID; } }
+
+        public string SteamID { get; internal set; }
         public readonly string Name;
 
         /// <summary>
@@ -40,12 +40,13 @@ namespace CSGSI.Nodes
         /// Contains information about the players' state (i.e. health, flashbang-status etc.)
         /// </summary>
         public readonly PlayerStateNode State;
+
         public readonly Position Position;
 
         internal PlayerNode(string JSON)
             : base(JSON)
         {
-            _steamID = GetString("steamid");
+            SteamID = GetString("steamid");
             Name = GetString("name");
             ObserverSlot = GetInt32("observer_slot");
             Team = GetEnum<PlayerTeam>("team");
@@ -55,6 +56,7 @@ namespace CSGSI.Nodes
             MatchStats = new MatchStatsNode(_data?.SelectToken("match_stats")?.ToString() ?? "{}");
             Activity = GetEnum<PlayerActivity>("activity");
             Position = ParsePosition(GetString("position"));
+            
         }
 
         private Position ParsePosition(string PositionAsString)

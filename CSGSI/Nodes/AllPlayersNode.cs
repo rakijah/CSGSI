@@ -36,7 +36,7 @@ namespace CSGSI.Nodes
             foreach (JToken jt in _data.Children())
             {
                 PlayerNode pn = new PlayerNode(jt.First.ToString());
-                pn._steamID = jt.Value<JProperty>()?.Name ?? "";
+                pn.SteamID = jt.Value<JProperty>()?.Name ?? "";
                 _players.Add(pn);
             }
         }

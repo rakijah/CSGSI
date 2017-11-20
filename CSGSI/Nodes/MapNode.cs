@@ -35,6 +35,21 @@ namespace CSGSI.Nodes
         /// </summary>
         public readonly MapTeamNode TeamT;
 
+        /// <summary>
+        /// Presumable used for tournaments.
+        /// </summary>
+        public readonly int NumMatchesToWinSeries;
+
+        /// <summary>
+        /// The amount of people currently spectating.
+        /// </summary>
+        public readonly int CurrentSpectators;
+
+        /// <summary>
+        /// Presumably used for tournaments to keep track of how many souvenir drops have been dropped to spectators.
+        /// </summary>
+        public readonly int SouvenirsTotal;
+
         internal MapNode(string JSON)
             : base(JSON)
         {
@@ -44,6 +59,9 @@ namespace CSGSI.Nodes
             Round = GetInt32("round");
             TeamCT = new MapTeamNode(_data["team_ct"]?.ToString() ?? "");
             TeamT = new MapTeamNode(_data["team_t"]?.ToString() ?? "");
+            NumMatchesToWinSeries = GetInt32("num_matches_to_win_series");
+            CurrentSpectators = GetInt32("current_spectators");
+            SouvenirsTotal = GetInt32("souvenirs_total");
         }
     }
 
@@ -71,6 +89,10 @@ namespace CSGSI.Nodes
         /// </summary>
         GunGameTRBomb,
         CoopMission,
+        /// <summary>
+        /// Wingman
+        /// </summary>
+        ScrimComp2v2,
         Custom
     }
 }

@@ -89,10 +89,13 @@ GameState
 					.Name
 					.Phase
 					.Round
-					.TeamCT
+                    .NumMatchesToWinSeries
+                    .CurrentSpectators
+                    .SouvenirsTotal
+					.TeamT / .TeamCT
                             .Score
-					.TeamT
-                            .Score
+                            .TimeoutsRemaining
+                            .MatchesWonThisSeries
 			.Round
 					.Phase
 					.Bomb

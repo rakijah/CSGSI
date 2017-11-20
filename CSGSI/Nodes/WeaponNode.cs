@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -15,8 +15,20 @@ namespace CSGSI.Nodes
         /// </summary>
         public readonly string Paintkit;
         public readonly WeaponType Type;
+
+        /// <summary>
+        /// The current ammunition.
+        /// </summary>
         public readonly int AmmoClip;
+
+        /// <summary>
+        /// The maximum ammunition per magazine.
+        /// </summary>
         public readonly int AmmoClipMax;
+
+        /// <summary>
+        /// The remaining ammunition that is not currently in the magazine.
+        /// </summary>
         public readonly int AmmoReserve;
         public readonly WeaponState State;
 
