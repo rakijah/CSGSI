@@ -46,6 +46,7 @@
     <Compile Include="Events\CSGSIEventHandlers.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="GameStateListener.cs" />
+    <Compile Include="IGameStateListener.cs" />
     <Compile Include="Nodes\AllPlayersNode.cs" />
     <Compile Include="Nodes\AuthNode.cs" />
     <Compile Include="Nodes\MapNode.cs" />
