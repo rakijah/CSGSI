@@ -16,7 +16,7 @@ namespace CSGSI
     /// <summary>
     /// A class that listens for HTTP POST requests
     /// </summary>
-    public class GameStateListener
+    public class GameStateListener : IGameStateListener
     {
         private AutoResetEvent _waitForConnection = new AutoResetEvent(false);
         private GameState _currentGameState;
