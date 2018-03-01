@@ -20,8 +20,8 @@ namespace CSGSI.Nodes
         public readonly MapPhase Phase;
 
         /// <summary>
-        /// The current round number
-        /// !! This is set to 0 for both warmup and pistol-round, check .Phase to prevent errors !!
+        /// The current round number <para/>
+        /// Attention: This is set to 0 for both warmup and pistol-round, check .Phase to prevent errors.
         /// </summary>
         public readonly int Round;
 
@@ -69,15 +69,30 @@ namespace CSGSI.Nodes
     {
         Undefined,
         Warmup,
+        /// <summary>
+        /// Match is live.
+        /// </summary>
         Live,
+        /// <summary>
+        /// Match is currently in an intermission (e.g. half time pause).
+        /// </summary>
         Intermission,
+        /// <summary>
+        /// Match has ended (i.e. currently displaying the end scoreboard).
+        /// </summary>
         GameOver
     }
 
     public enum MapMode
     {
         Undefined,
+        /// <summary>
+        /// Casual
+        /// </summary>
         Casual,
+        /// <summary>
+        /// Competitive
+        /// </summary>
         Competitive,
         DeathMatch,
         /// <summary>
@@ -85,7 +100,7 @@ namespace CSGSI.Nodes
         /// </summary>
         GunGameProgressive,
         /// <summary>
-        /// Arms Race & Demolition
+        /// Arms Race &amp; Demolition
         /// </summary>
         GunGameTRBomb,
         CoopMission,

@@ -41,7 +41,15 @@ namespace CSGSI.Nodes
         /// </summary>
         public readonly PlayerStateNode State;
 
-        public readonly Position Position;
+        /// <summary>
+        /// The position of this player in the world.
+        /// </summary>
+        public readonly Vector3 Position;
+
+        /// <summary>
+        /// The direction the player is currently facing.
+        /// </summary>
+        public readonly Vector3 Forward;
 
         internal PlayerNode(string JSON)
             : base(JSON)
@@ -55,34 +63,39 @@ namespace CSGSI.Nodes
             Weapons = new WeaponsNode(_data?.SelectToken("weapons")?.ToString() ?? "{}");
             MatchStats = new MatchStatsNode(_data?.SelectToken("match_stats")?.ToString() ?? "{}");
             Activity = GetEnum<PlayerActivity>("activity");
-            Position = ParsePosition(GetString("position"));
-            
+            Position = ParseVector(GetString("position"));
+            Forward = ParseVector(GetString("forward"));
         }
 
-        private Position ParsePosition(string PositionAsString)
+        private Vector3 ParseVector(string positionAsString)
         {
-            string[] posCoords = PositionAsString.Split(','); //still contains whitespace at the end, but parsing doesn't fail because of this
+            string[] posCoords = positionAsString.Split(','); //still contains whitespace at the end, but parsing doesn't fail because of this
             if (posCoords.Length == 3)
             {
-                double x = 0, y = 0, z = 0;
-                if (double.TryParse(posCoords[0], out x) &&
-                   double.TryParse(posCoords[1], out y) &&
-                   double.TryParse(posCoords[2], out z))
+                if (double.TryParse(posCoords[0], out double x) &&
+                    double.TryParse(posCoords[1], out double y) &&
+                    double.TryParse(posCoords[2], out double z))
                 {
-                    return new Position(x, y, z);
+                    return new Vector3(x, y, z);
                 }
             }
-            return new Position(0, 0, 0);
+            return new Vector3(0, 0, 0);
         }
     }
 
     public enum PlayerActivity
     {
         Undefined,
+        /// <summary>
+        /// Is in a menu (also applies to opening the in game menu with ESC).
+        /// </summary>
         Menu,
+        /// <summary>
+        /// Playing or spectating.
+        /// </summary>
         Playing,
         /// <summary>
-        /// Console is open
+        /// Console is open.
         /// </summary>
         TextInput
     }
@@ -94,19 +107,49 @@ namespace CSGSI.Nodes
         CT
     }
 
-    public struct Position
+    /// <summary>
+    /// A 3 dimensional vector.
+    /// </summary>
+    public struct Vector3
     {
-        double X, Y, Z;
-        public Position(double X, double Y, double Z)
+        /// <summary>
+        /// The X component of the vector (left/right).
+        /// </summary>
+        public double X;
+
+        /// <summary>
+        /// The Y component of the vector (up/down).
+        /// </summary>
+        public double Y;
+
+        /// <summary>
+        /// The Z component of the vector (forward/backward).
+        /// </summary>
+        public double Z;
+        
+        /// <summary>
+        /// Initialises a new vector with the given X, Y and Z components.
+        /// </summary>
+        /// <param name="x"></param>
+        /// <param name="y"></param>
+        /// <param name="z"></param>
+        public Vector3(double x, double y, double z)
         {
-            this.X = X;
-            this.Y = Y;
-            this.Z = Z;
+            this.X = x;
+            this.Y = y;
+            this.Z = z;
         }
 
+        /// <summary>
+        /// Generates a string formatted like so: <para/>
+        /// (X, Y, Z)
+        /// </summary>
+        /// <returns>The string representation of this vector.</returns>
         public override string ToString()
         {
-            return string.Format("({0}, {1}, {2})", X, Y, Z);
+            return $"({X}, {Y}, {Z})";
         }
     }
+
+    
 }

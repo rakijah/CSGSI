@@ -6,7 +6,6 @@ A simple C# library to interface with Counter-Strike: Global Offensive *Game Sta
 [About CSGSI](#about-csgsi)  
 [Installation](#installation)  
 [Usage](#usage)  
-[Layout](#layout)  
 [Events](#events)  
 [Null value handling](#null-value-handling)  
 [Example program](#example-program)  
@@ -73,82 +72,6 @@ gsl.NewGameState += new NewGameStateHandler(OnNewGameState);
 ```
 
 4. Use `GameStateListener.Start()` to start listening for HTTP POST requests from the game client. This method will return `false` if starting the listener fails (most likely due to insufficient privileges).
-
-## Layout
-
-```
-GameState
-			.Provider
-					.Name
-					.AppID
-					.Version
-					.SteamID
-					.TimeStamp
-			.Map
-					.Mode
-					.Name
-					.Phase
-					.Round
-                    .NumMatchesToWinSeries
-                    .CurrentSpectators
-                    .SouvenirsTotal
-					.TeamT / .TeamCT
-                            .Score
-                            .TimeoutsRemaining
-                            .MatchesWonThisSeries
-			.Round
-					.Phase
-					.Bomb
-					.WinTeam
-			.Player
-					.SteamID
-					.Name
-					.Clan
-					.Team
-					.Activity
-					.Weapons
-							.ActiveWeapon
-							[]
-									.Name
-									.Paintkit
-									.Type
-									.AmmoClip
-									.AmmoClipMax
-									.AmmoReserve
-									.State
-					.MatchStats
-							.Kills
-							.Assists
-							.Deaths
-							.MVPs
-							.Score
-					.State
-							.Health
-							.Armor
-							.Helmet
-							.Flashed
-							.Smoked
-							.Burning
-							.Money
-							.RoundKills
-							.RoundKillHS
-							.DefuseKit
-                    .Position
-			.AllPlayers
-					[]
-							=>Player
-            .PhaseCountdowns
-                            .Phase
-                            .PhaseEndsIn
-			.Previously
-					=>GameState
-			.Added
-					=>GameState
-			.Auth
-					.Token
-```
-
-Every Node has a property `string JSON` that contains the JSON string that was parsed to create the node.
 
 ##### Examples:
 ```C#
