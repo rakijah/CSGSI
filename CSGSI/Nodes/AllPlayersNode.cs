@@ -1,41 +1,60 @@
-using System;
-using System.Collections.Generic;
 using Newtonsoft.Json.Linq;
+using System.Collections;
+using System.Collections.Generic;
 
 namespace CSGSI.Nodes
 {
     /// <summary>
-    /// A node that contains a list of PlayerNodes. <para/>
+    /// A node that contains a list of <see cref="PlayerNode"/>s. <para/>
     /// This is only available when watching a demo or when spectating on a server with mp_forcecamera 1
     /// </summary>
-    public class AllPlayersNode : NodeBase
+    public class AllPlayersNode : NodeBase, IEnumerable<PlayerNode>
     {
-        private readonly List<PlayerNode> _players = new List<PlayerNode>();
+        /// <summary>
+        /// Gets the amount of players in this node.
+        /// </summary>
+        public int Count => Players.Count;
 
-        public IEnumerable<PlayerNode> PlayerList => _players;
-        
-        public PlayerNode GetByName(string Name)
+        /// <summary>
+        /// A list of all player in this node.
+        /// </summary>
+        public List<PlayerNode> Players { get; set; } = new List<PlayerNode>();
+
+        /// <summary>
+        /// Gets a list of all player in this node. (kept for compatibility)
+        /// </summary>
+        public IEnumerable<PlayerNode> PlayerList => Players;
+
+        /// <summary>
+        /// Gets a player by their in-game name.
+        /// </summary>
+        /// <param name="name">The name to search by.</param>
+        /// <returns></returns>
+        public PlayerNode GetByName(string name)
         {
-            PlayerNode pn = _players.Find(x => x.Name == Name);
+            PlayerNode pn = Players.Find(x => x.Name == name);
             if (pn != null)
                 return pn;
-            
+
             return new PlayerNode("");
         }
-        
-        public PlayerNode GetBySteamID(string SteamID)
+
+        /// <summary>
+        /// Gets a player by their Steam-ID.
+        /// </summary>
+        /// <param name="steamId">The Steam-ID to search by.</param>
+        /// <returns></returns>
+        public PlayerNode GetBySteamID(string steamId)
         {
-            PlayerNode pn = _players.Find(x => x.SteamID == SteamID);
+            PlayerNode pn = Players.Find(x => x.SteamID == steamId);
             if (pn != null)
                 return pn;
 
             return new PlayerNode("");
         }
 
-        public int Count => _players.Count;
-
-        internal AllPlayersNode(string JSON)
-            : base(JSON)
+        internal AllPlayersNode(string json)
+            : base(json)
         {
             foreach (JToken jt in _data.Children())
             {
@@ -43,7 +62,7 @@ namespace CSGSI.Nodes
                 {
                     SteamID = jt.Value<JProperty>()?.Name ?? ""
                 };
-                _players.Add(pn);
+                Players.Add(pn);
             }
         }
 
@@ -56,23 +75,37 @@ namespace CSGSI.Nodes
         {
             get
             {
-                if (index > _players.Count - 1)
+                if (index > Players.Count - 1)
                 {
                     return new PlayerNode("");
                 }
 
-                return _players[index];
+                return Players[index];
             }
         }
 
-        public IEnumerator<PlayerNode> GetEnumerator()
+        /// <summary>
+        /// Gets all players that are on the specified team.
+        /// </summary>
+        /// <param name="team">The team.</param>
+        /// <returns></returns>
+        public List<PlayerNode> GetByTeam(PlayerTeam team)
         {
-            return _players.GetEnumerator();
+            return Players.FindAll(x => x.Team == team);
         }
 
-        public List<PlayerNode> GetTeam(PlayerTeam Team)
+        /// <summary>
+        /// Gets an enumerator that can be used to loop through all players in this node.
+        /// </summary>
+        /// <returns></returns>
+        public IEnumerator<PlayerNode> GetEnumerator()
         {
-            return _players.FindAll(x => x.Team == Team);
+            return Players.GetEnumerator();
+        }
+
+        IEnumerator IEnumerable.GetEnumerator()
+        {
+            return Players.GetEnumerator();
         }
     }
 }

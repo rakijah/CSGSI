@@ -10,8 +10,6 @@ A simple C# library to interface with Counter-Strike: Global Offensive *Game Sta
 [Null value handling](#null-value-handling)  
 [Example program](#example-program)  
 
-<br>
-
 ## What is Game State Integration
 
 [This wiki page by Valve](https://developer.valvesoftware.com/wiki/Counter-Strike:_Global_Offensive_Game_State_Integration) explains the concept of GSI.
@@ -68,7 +66,7 @@ void OnNewGameState(GameState gs)
 3. Subscribe to the `NewGameState` event:
 
 ```C#
-gsl.NewGameState += new NewGameStateHandler(OnNewGameState);
+gsl.NewGameState += OnNewGameState;
 ```
 
 4. Use `GameStateListener.Start()` to start listening for HTTP POST requests from the game client. This method will return `false` if starting the listener fails (most likely due to insufficient privileges).
@@ -94,7 +92,6 @@ Raising these events is disabled by default. To enable this feature, set `GameSt
 
 Available events: 
 
-* `PlayerGotKill` - Is raised when a player gets a kill.
 * `RoundPhaseChanged` - Is raised when the round phase changes (for example "Live", "FreezeTime" etc.).
 * `PlayerFlashed` - Is raised when a player is flashed. Includes information about how much the player was flashed (0 - 255).
 * `BombPlanted` - Is raised when the bomb is planted.
@@ -110,8 +107,9 @@ In case the JSON did not contain the requested information or parsing the node f
 Type|Default value
 ----|-------------
 int|-1
+float|-1
 string| String.Empty
-Position (from Player.Position)| (X: 0, Y: 0, Z: 0)
+Vector3| (X: 0, Y: 0, Z: 0)
 
 All Enums have a value `enum.Undefined` that serves the same purpose.
 
@@ -139,22 +137,48 @@ namespace CSGSI_Test
             }
             Console.WriteLine("Listening...");
         }
-
-        static bool IsPlanted = false;
-
+        
         static void OnNewGameState(GameState gs)
         {
-            if(!IsPlanted &&
-               gs.Round.Phase == RoundPhase.Live &&
-               gs.Round.Bomb == BombState.Planted &&
-               gs.Previously.Round.Bomb == BombState.Undefined)
+            if(gs.Round.Phase == RoundPhase.Live &&
+               gs.Bomb.State == BombState.Planted &&
+               gs.Previously.Bomb.State == BombState.Planting)
             {
                 Console.WriteLine("Bomb has been planted.");
                 IsPlanted = true;
-            }else if(IsPlanted && gs.Round.Phase == RoundPhase.FreezeTime)
-            {
-                IsPlanted = false;
             }
+        }
+    }
+}
+```
+
+Note that you can now also use events provided by the GameStateListener to achieve this:
+
+```C#
+using System;
+using CSGSI;
+using CSGSI.Nodes;
+
+namespace CSGSI_Test
+{
+    class Program
+    {
+        static GameStateListener gsl;
+        static void Main(string[] args)
+        {
+            gsl = new GameStateListener(3000);
+            gsl.BombPlanted += BombPlanted;
+            gsl.EnableRaisingIntricateEvents = true;
+            if (!gsl.Start())
+            {
+                Environment.Exit(0);
+            }
+            Console.WriteLine("Listening...");
+        }
+
+        private static void BombPlanted(CSGSI.Events.BombPlantedEventArgs e)
+        {
+            Console.WriteLine("Bomb has been planted.");
         }
     }
 }

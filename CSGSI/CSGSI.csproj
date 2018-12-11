@@ -31,8 +31,8 @@
     <DocumentationFile>bin\Release\CSGSI.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Newtonsoft.Json, Version=11.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
-      <HintPath>..\packages\Newtonsoft.Json.11.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -43,13 +43,24 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Events\CSGSIEventHandlers.cs" />
+    <Compile Include="Events\BombDefusedEventArgs.cs" />
+    <Compile Include="Events\BombExplodedEventArgs.cs" />
+    <Compile Include="Events\BombPlantedEventArgs.cs" />
+    <Compile Include="Events\PlayerFlashedEventArgs.cs" />
+    <Compile Include="Events\RoundBeginEventArgs.cs" />
+    <Compile Include="Events\RoundEndEventArgs.cs" />
+    <Compile Include="Events\RoundPhaseChangedEventArgs.cs" />
     <Compile Include="GameState.cs" />
     <Compile Include="GameStateListener.cs" />
     <Compile Include="IGameStateListener.cs" />
     <Compile Include="Nodes\AllPlayersNode.cs" />
     <Compile Include="Nodes\AuthNode.cs" />
+    <Compile Include="Nodes\BombNode.cs" />
+    <Compile Include="Nodes\Flame.cs" />
+    <Compile Include="Nodes\GrenadeNode.cs" />
+    <Compile Include="Nodes\GrenadesNode.cs" />
     <Compile Include="Nodes\MapNode.cs" />
+    <Compile Include="Nodes\MapRoundWinsNode.cs" />
     <Compile Include="Nodes\MatchStatsNode.cs" />
     <Compile Include="Nodes\NodeBase.cs" />
     <Compile Include="Nodes\PhaseCountdownsNode.cs" />
@@ -61,6 +72,7 @@
     <Compile Include="Nodes\WeaponNode.cs" />
     <Compile Include="Nodes\WeaponsNode.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Vector3.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

@@ -1,20 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
 namespace CSGSI.Nodes
 {
+    /// <summary>
+    /// A node that contains information related to authentication.
+    /// </summary>
     public class AuthNode : NodeBase
     {
-        public readonly string Token;
+        /// <summary>
+        /// The provided authentication token.
+        /// </summary>
+        public string Token { get; set; }
 
-        internal AuthNode(string JSON)
-            : base(JSON)
+        internal AuthNode(string json)
+            : base(json)
         {
             Token = GetString("token");
         }
-
     }
 }

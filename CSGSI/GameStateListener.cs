@@ -1,16 +1,19 @@
-using System;
-using System.IO;
-using System.Net;
-using System.Threading;
-using System.Text.RegularExpressions;
-using System.Diagnostics;
-using System.ComponentModel;
 using CSGSI.Events;
 using CSGSI.Nodes;
+using System;
+using System.ComponentModel;
+using System.IO;
 using System.Linq;
+using System.Net;
+using System.Text.RegularExpressions;
+using System.Threading;
 
 namespace CSGSI
 {
+    /// <summary>
+    /// A delegate to handle the NewGameState event.
+    /// </summary>
+    /// <param name="gs">The new <see cref="GameState"/>.</param>
     public delegate void NewGameStateHandler(GameState gs);
 
     /// <summary>
@@ -20,12 +23,10 @@ namespace CSGSI
     {
         private AutoResetEvent _waitForConnection = new AutoResetEvent(false);
         private GameState _currentGameState;
-        private int _port;
-        private bool _running = false;
         private HttpListener _listener;
 
         /// <summary>
-        /// The most recently received GameState
+        /// The most recently received GameState.
         /// </summary>
         public GameState CurrentGameState
         {
@@ -45,31 +46,31 @@ namespace CSGSI
         }
 
         /// <summary>
-        /// Gets the port that this GameStateListener instance is listening to
+        /// Gets the port that this GameStateListener instance is listening to.
         /// </summary>
-        public int Port { get { return _port; } }
+        public int Port { get; private set; }
 
         /// <summary>
-        /// Gets a value indicating if the listening process is running
+        /// Gets a value indicating if the listening process is running.
         /// </summary>
-        public bool Running { get { return _running; } }
+        public bool Running { get; private set; } = false;
 
         /// <summary>
-        /// Occurs after a new GameState has been received
+        /// Is raised after a new GameState has been received.
         /// </summary>
         public event NewGameStateHandler NewGameState = delegate { };
 
         /// <summary>
-        /// A GameStateListener that listens for connections to http://localhost:&lt;Port&gt;/
+        /// A GameStateListener that listens for connections to http://localhost:&lt;Port&gt;/.
         /// </summary>
         /// <param name="Port"></param>
         public GameStateListener(int Port)
         {
-            _port = Port;
+            this.Port = Port;
         }
 
         /// <summary>
-        /// A GameStateListener that listens for connections to the specified URI
+        /// A GameStateListener that listens for connections to the specified URI.
         /// </summary>
         /// <param name="URI">The URI to listen to</param>
         public GameStateListener(string URI)
@@ -83,40 +84,35 @@ namespace CSGSI
             {
                 throw new ArgumentException("Not a valid URI: " + URI);
             }
-            _port = Convert.ToInt32(PortMatch.Groups[1].Value);
-            
+            Port = Convert.ToInt32(PortMatch.Groups[1].Value);
+
             _listener = new HttpListener();
             _listener.Prefixes.Add(URI);
         }
 
         /// <summary>
-        /// Starts listening for HTTP POST requests on the specified port<para />
+        /// Starts listening for HTTP POST requests on the specified port.
         /// </summary>
-        /// <param name="port">The port to listen on</param>
         /// <returns>Returns true on success</returns>
         public bool Start()
         {
-            if (!_running)
+            if (Running)
+                return false;
+
+            _listener = new HttpListener();
+            _listener.Prefixes.Add("http://localhost:" + Port + "/");
+            Thread ListenerThread = new Thread(new ThreadStart(Run));
+            try
             {
-                // Initialising only at Start of Listener (for reuse after Stop)
-
-                _listener = new HttpListener();
-                _listener.Prefixes.Add("http://localhost:" + Port + "/");
-                Thread ListenerThread = new Thread(new ThreadStart(Run));
-                try
-                {
-                    _listener.Start();
-                }
-                catch (HttpListenerException)
-                {
-                    return false;
-                }
-                _running = true;
-                ListenerThread.Start();
-                return true;
+                _listener.Start();
             }
-
-            return false;
+            catch (HttpListenerException)
+            {
+                return false;
+            }
+            Running = true;
+            ListenerThread.Start();
+            return true;
         }
 
         /// <summary>
@@ -124,13 +120,14 @@ namespace CSGSI
         /// </summary>
         public void Stop()
         {
-            _running = false;
+            Running = false;
             _listener.Close();
+            (_listener as IDisposable).Dispose();
         }
 
         private void Run()
         {
-            while (_running)
+            while (Running)
             {
                 _listener.BeginGetContext(ReceiveGameState, _listener);
                 _waitForConnection.WaitOne();
@@ -139,7 +136,8 @@ namespace CSGSI
             try
             {
                 _listener.Stop();
-            }catch(ObjectDisposedException)
+            }
+            catch (ObjectDisposedException)
             { /* _listener was already disposed, do nothing */ }
         }
 
@@ -150,7 +148,7 @@ namespace CSGSI
             {
                 context = _listener.EndGetContext(result);
             }
-            catch (ObjectDisposedException e)
+            catch (ObjectDisposedException)
             {
                 // Listener was Closed due to call of Stop();
                 return;
@@ -180,6 +178,7 @@ namespace CSGSI
         }
 
         #region Intricate Events
+
         /// <summary>
         /// Determines whether intricate events such as PlayerDied are raised or ignored.
         /// </summary>
@@ -193,32 +192,10 @@ namespace CSGSI
         {
             if (!EnableRaisingIntricateEvents)
                 return;
-
-            if (PlayerGotKill != null)
-            {
-                var killer = gs.Previously.AllPlayers.PlayerList.Where(player => player.MatchStats.Kills != -1).SingleOrDefault(player =>  
-                            player.MatchStats.Kills < gs.AllPlayers.GetBySteamID(player.SteamID).MatchStats.Kills);
-                if (killer != null)
-                {
-                    var probableVictim = gs.Previously.AllPlayers.PlayerList.Where(player => player.MatchStats.Deaths != -1).SingleOrDefault(player =>
-                            player.MatchStats.Deaths < gs.AllPlayers.GetBySteamID(player.SteamID).MatchStats.Deaths);
-
-                    if (probableVictim == null)
-                        probableVictim = new PlayerNode("");
-
-                    var assister = gs.Previously.AllPlayers.PlayerList.Where(player => player.MatchStats.Assists != -1).SingleOrDefault(player =>
-                            player.MatchStats.Assists < gs.AllPlayers.GetBySteamID(player.SteamID).MatchStats.Assists);
-
-                    if (assister == null)
-                        assister = new PlayerNode("");
-
-                    RaiseEvent(PlayerGotKill, new PlayerGotKillEventArgs(killer, assister, probableVictim));
-                }
-            }
             
             if (RoundPhaseChanged != null)
             {
-                if(gs.Previously.Round.Phase != RoundPhase.Undefined && 
+                if (gs.Previously.Round.Phase != RoundPhase.Undefined &&
                    gs.Round.Phase != RoundPhase.Undefined &&
                    gs.Previously.Round.Phase != gs.Round.Phase)
                 {
@@ -226,12 +203,12 @@ namespace CSGSI
                 }
             }
 
-            if(PlayerFlashed != null)
+            if (PlayerFlashed != null)
             {
-                foreach(var previousPlayer in gs.Previously.AllPlayers)
+                foreach (var previousPlayer in gs.Previously.AllPlayers)
                 {
                     var currentPlayer = gs.AllPlayers.GetBySteamID(previousPlayer.SteamID);
-                    if(previousPlayer.State.Flashed == 0 &&
+                    if (previousPlayer.State.Flashed == 0 &&
                        previousPlayer.State.Flashed < currentPlayer.State.Flashed)
                     {
                         RaiseEvent(PlayerFlashed, new PlayerFlashedEventArgs(currentPlayer));
@@ -239,7 +216,7 @@ namespace CSGSI
                 }
             }
 
-            if(BombPlanted != null)
+            if (BombPlanted != null)
             {
                 //if previous state contains any player with the bomb
                 //and current state does not contain any players with the bomb
@@ -247,18 +224,17 @@ namespace CSGSI
                 //and the current bombstate is planted
                 var planter = gs.Previously.AllPlayers.PlayerList.SingleOrDefault(player => player.Weapons.WeaponList.Any(weapon => weapon.Type == WeaponType.C4));
                 if (planter != null &&
-                   gs.AllPlayers.PlayerList.All(player => !player.Weapons.WeaponList.Any(weapon => weapon.Type == WeaponType.C4)) &&
-                   gs.Previously.Round.Bomb == BombState.Undefined && 
-                   gs.Round.Bomb == BombState.Planted)
+                   gs.Previously.Bomb.State == BombState.Planting &&
+                   gs.Bomb.State == BombState.Planted)
                 {
                     RaiseEvent(BombPlanted, new BombPlantedEventArgs(gs.AllPlayers.GetBySteamID(planter.SteamID)));
                 }
             }
 
-            if(BombDefused != null)
+            if (BombDefused != null)
             {
-                if(gs.Previously.Round.Bomb == BombState.Planted &&
-                   gs.Round.Bomb == BombState.Defused)
+                if (gs.Previously.Bomb.State == BombState.Planted &&
+                   gs.Bomb.State == BombState.Defused)
                 {
                     var defuser = gs.AllPlayers.PlayerList.SingleOrDefault(player => gs.AllPlayers.GetBySteamID(player.SteamID).MatchStats.Score > player.MatchStats.Score);
                     if (defuser == null)
@@ -268,37 +244,31 @@ namespace CSGSI
                 }
             }
 
-            if(RoundEnd != null)
+            if (RoundEnd != null)
             {
-                if(gs.Previously.Round.Phase == RoundPhase.Live && gs.Round.Phase == RoundPhase.Over)
+                if (gs.Previously.Round.Phase == RoundPhase.Live && gs.Round.Phase == RoundPhase.Over)
                 {
                     RaiseEvent(RoundEnd, new RoundEndEventArgs(gs));
                 }
             }
 
-            if(RoundBegin != null)
+            if (RoundBegin != null)
             {
-                if(gs.Previously.Round.Phase == RoundPhase.FreezeTime && gs.Round.Phase == RoundPhase.Live)
+                if (gs.Previously.Round.Phase == RoundPhase.FreezeTime && gs.Round.Phase == RoundPhase.Live)
                 {
                     RaiseEvent(RoundBegin, new RoundBeginEventArgs(gs));
                 }
             }
 
-            if(BombExploded != null)
+            if (BombExploded != null)
             {
-                if (gs.Previously.Round.Bomb == BombState.Planted && gs.Round.Bomb == BombState.Exploded)
+                if (gs.Previously.Bomb.State == BombState.Planted && gs.Bomb.State == BombState.Exploded)
                 {
                     RaiseEvent(BombExploded);
                 }
             }
         }
-
-        /// <summary>
-        /// Is raised when a player gets a kill. Includes information about the killer, the (probable) assister and the (probable) victim.<para/>
-        /// This information is not included in the GameState, so the assister and victim are just derived from players whose Assists/Deaths variables changed.
-        /// </summary>
-        public event PlayerGotKillHandler PlayerGotKill;
-
+        
         /// <summary>
         /// Is raised when the round phase changes (for example "Live", "FreezeTime" etc.).
         /// </summary>
@@ -330,7 +300,7 @@ namespace CSGSI
         public event RoundEndHandler RoundEnd;
 
         /// <summary>
-        /// Is raised when a round begins (i.e. exits FreezeTime). Contains information about team scores and total round amount.
+        /// Is raised when a round begins (i.e. exits freeze time). Contains information about team scores and total round amount.
         /// </summary>
         public event RoundBeginHandler RoundBegin;
 
@@ -363,6 +333,7 @@ namespace CSGSI
                 }
             }
         }
-        #endregion
+
+        #endregion Intricate Events
     }
 }
