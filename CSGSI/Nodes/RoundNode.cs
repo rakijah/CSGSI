@@ -11,6 +11,11 @@ namespace CSGSI.Nodes
         public RoundPhase Phase { get; set; }
 
         /// <summary>
+        /// The current state of the bomb (does not include states like "Dropped" or "Planting").
+        /// </summary>
+        public BombState Bomb { get; set; }
+
+        /// <summary>
         /// The team that won the current round (only available when Phase == Over)
         /// </summary>
         public RoundWinTeam WinTeam { get; set; }
@@ -19,6 +24,7 @@ namespace CSGSI.Nodes
             : base(json)
         {
             Phase = GetEnum<RoundPhase>("phase");
+            Bomb = GetEnum<BombState>("bomb");
             WinTeam = GetEnum<RoundWinTeam>("win_team");
         }
     }

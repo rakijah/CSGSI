@@ -180,7 +180,7 @@ namespace CSGSI
         #region Intricate Events
 
         /// <summary>
-        /// Determines whether intricate events such as PlayerDied are raised or ignored.
+        /// Determines whether intricate events are raised or ignored. Most of these events are only available when spectating a match!
         /// </summary>
         public bool EnableRaisingIntricateEvents { get; set; } = false;
 
@@ -218,10 +218,6 @@ namespace CSGSI
 
             if (BombPlanted != null)
             {
-                //if previous state contains any player with the bomb
-                //and current state does not contain any players with the bomb
-                //and the previous bombstate was undefined
-                //and the current bombstate is planted
                 var planter = gs.Previously.AllPlayers.PlayerList.SingleOrDefault(player => player.Weapons.WeaponList.Any(weapon => weapon.Type == WeaponType.C4));
                 if (planter != null &&
                    gs.Previously.Bomb.State == BombState.Planting &&
@@ -233,8 +229,7 @@ namespace CSGSI
 
             if (BombDefused != null)
             {
-                if (gs.Previously.Bomb.State == BombState.Planted &&
-                   gs.Bomb.State == BombState.Defused)
+                if (gs.Previously.Bomb.State == BombState.Planted && gs.Bomb.State == BombState.Defused)
                 {
                     var defuser = gs.AllPlayers.PlayerList.SingleOrDefault(player => gs.AllPlayers.GetBySteamID(player.SteamID).MatchStats.Score > player.MatchStats.Score);
                     if (defuser == null)

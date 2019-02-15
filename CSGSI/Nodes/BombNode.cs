@@ -1,7 +1,7 @@
 ﻿namespace CSGSI.Nodes
 {
     /// <summary>
-    /// Contains information about the bomb.
+    /// Contains information about the bomb. This node is only available when spectating!
     /// </summary>
     public class BombNode : NodeBase
     {
@@ -16,6 +16,11 @@
         public Vector3 Position { get; set; }
 
         /// <summary>
+        /// The time remaining for the current state (i.e. time remaining until explosion if bomb is planted, time remaining until defused if defusing, etc).
+        /// </summary>
+        public float Countdown { get; set; }
+
+        /// <summary>
         /// Initializes a new <see cref="BombNode"/> from the given JSON string.
         /// </summary>
         /// <param name="json"></param>
@@ -24,6 +29,7 @@
         {
             State = GetEnum<BombState>("state");
             Position = GetVector3("position");
+            Countdown = GetFloat("countdown");
         }
     }
 
