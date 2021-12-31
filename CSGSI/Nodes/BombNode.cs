@@ -21,6 +21,11 @@
         public float Countdown { get; set; }
 
         /// <summary>
+        /// The Steam-ID of the player who is carrying the bomb currently.
+        /// </summary>
+        public int Player { get; set; }
+
+        /// <summary>
         /// Initializes a new <see cref="BombNode"/> from the given JSON string.
         /// </summary>
         /// <param name="json"></param>
@@ -30,6 +35,7 @@
             State = GetEnum<BombState>("state");
             Position = GetVector3("position");
             Countdown = GetFloat("countdown");
+            Player = GetInt32("player");
         }
     }
 
