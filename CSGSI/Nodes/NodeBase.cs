@@ -22,7 +22,7 @@ namespace CSGSI.Nodes
         /// <summary>
         /// Whether or not this node contains data (i.e. JSON string is not empty)
         /// </summary>
-        public bool HasData => !string.IsNullOrWhiteSpace(JSON) || JSON.Equals("{}");
+        public bool HasData => !string.IsNullOrWhiteSpace(JSON) || !JSON.Equals("{}");
 
         internal NodeBase(string json)
         {
