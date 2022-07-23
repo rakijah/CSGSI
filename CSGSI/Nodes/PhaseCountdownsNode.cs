@@ -66,6 +66,11 @@ namespace CSGSI.Nodes
         /// <summary>
         /// Match is currently in a time-out called by the CT team.
         /// </summary>
-        Timeout_CT
+        Timeout_CT,
+        
+        /// <summary>
+        /// Match is currently in warmup.
+        /// </summary>
+        Warmup
     }
 }
