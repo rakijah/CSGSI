@@ -21,6 +21,11 @@
         public float Countdown { get; set; }
 
         /// <summary>
+        /// The SteamID of the owner of the C4.
+        /// </summary>
+        public int Owner { get; set; }
+
+        /// <summary>
         /// Initializes a new <see cref="BombNode"/> from the given JSON string.
         /// </summary>
         /// <param name="json"></param>
@@ -30,6 +35,7 @@
             State = GetEnum<BombState>("state");
             Position = GetVector3("position");
             Countdown = GetFloat("countdown");
+            Owner = GetInt32("player");
         }
     }
 
