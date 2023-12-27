@@ -12,7 +12,7 @@ namespace CSGSI.Nodes
         /// <summary>
         /// The data that was passed via JSON.
         /// </summary>
-        protected JObject _data;
+        protected readonly JObject _data;
 
         /// <summary>
         /// The raw JSON string that was used to construct this node.
@@ -22,7 +22,7 @@ namespace CSGSI.Nodes
         /// <summary>
         /// Whether or not this node contains data (i.e. JSON string is not empty)
         /// </summary>
-        public bool HasData => !string.IsNullOrWhiteSpace(JSON);
+        public bool HasData { get; private set; }
 
         internal NodeBase(string json)
         {
@@ -31,6 +31,7 @@ namespace CSGSI.Nodes
             if (json.Equals("") || json.Equals("true", StringComparison.InvariantCultureIgnoreCase))
             {
                 json = "{}";
+                HasData = false;
             }
             _data = JObject.Parse(json);
             JSON = json;
