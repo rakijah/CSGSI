@@ -131,7 +131,12 @@ namespace CSGSI.Nodes
         /// <summary>
         /// Melee weapons (such as hammer/wrench) in Danger Zone.
         /// </summary>
-        Melee
+        Melee,
+
+        /// <summary>
+        /// Bump mine in Danger Zone.
+        /// </summary>
+        BumpMine
     }
 
     /// <summary>
